@@ -122,3 +122,66 @@ void MoveCommand::Read( InputMemoryBitStream& inInputStream )
 {
 	inInputStream.Read( mTarget );
 }
+
+//start of build command functions
+BuildCommandPtr BuildCommand::StaticCreate()
+{
+
+}
+
+void BuildCommand::Write( OutputMemoryBitStream& inOutputStream )
+{
+
+}
+
+void BuildCommand::ProcessCommand()
+{
+
+}
+
+void BuildCommand::Read( InputMemoryBitStream& inInputStream )
+{
+
+}
+
+//start of switch team command functions
+SwitchTeamCommandPtr SwitchTeamCommand::StaticCreate()
+{
+
+}
+
+void SwitchTeamCommand::Write( OutputMemoryBitStream& inOutputStream )
+{
+
+}
+
+void SwitchTeamCommand::ProcessCommand()
+{
+
+}
+
+void SwitchTeamCommand::Read( InputMemoryBitStream& inInputStream )
+{
+
+}
+
+//start of meow command functions
+MeowCommandPtr MeowCommand::StaticCreate()
+{
+
+}
+
+void MeowCommand::Write( OutputMemoryBitStream& inOutputStream )
+{
+
+}
+
+void MeowCommand::ProcessCommand()
+{
+
+}
+
+void MeowCommand::Read( InputMemoryBitStream& inInputStream )
+{
+
+}

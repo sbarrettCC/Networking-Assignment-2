@@ -5,7 +5,10 @@ public:
 	{
 		CM_INVALID,
 		CM_ATTACK,
-		CM_MOVE
+		CM_MOVE,
+		CM_BUILD,
+		CM_SWITCHTEAM,
+		CM_MEOW
 	};
 
 	Command() :
@@ -79,3 +82,66 @@ protected:
 };
 
 typedef shared_ptr< MoveCommand > MoveCommandPtr;
+
+//build command class
+class BuildCommand : public Command
+{
+public: 
+	BuildCommand()
+	{
+		mCommandType = CM_BUILD;
+	}
+
+	static shared_ptr< BuildCommand > StaticCreate(  );
+
+	virtual void Write( OutputMemoryBitStream& inOutputStream ) override;
+
+	virtual void ProcessCommand() override;
+
+protected: 
+	virtual void Read( InputMemoryBitStream& inInputStream ) override;
+};
+
+typedef shared_ptr< BuildCommand > BuildCommandPtr;
+
+//switch team command class
+class SwitchTeamCommand : public Command
+{
+public:
+	SwitchTeamCommand()
+	{
+		mCommandType = CM_SWITCHTEAM;
+	}
+
+	static shared_ptr< SwitchTeamCommand > StaticCreate();
+
+	virtual void Write( OutputMemoryBitStream& inOutputStream ) override;
+
+	virtual void ProcessCommand() override;
+
+protected:
+	virtual void Read( InputMemoryBitStream& inInputStream ) override;
+};
+
+typedef shared_ptr< SwitchTeamCommand > SwitchTeamCommandPtr;
+
+//meow command class
+class MeowCommand : public Command
+{
+public: 
+	MeowCommand()
+	{
+		mCommandType = CM_MEOW;
+	}
+
+	static shared_ptr< MeowCommand > StaticCreate();
+
+	virtual void Write( OutputMemoryBitStream& inOutputStream ) override;
+
+	virtual void ProcessCommand() override;
+
+protected:
+	virtual void Read( InputMemoryBitStream& inInputStream ) override;
+};
+
+typedef shared_ptr< MeowCommand > MeowCommandPtr;

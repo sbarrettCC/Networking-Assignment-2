@@ -124,10 +124,21 @@ void MoveCommand::Read( InputMemoryBitStream& inInputStream )
 }
 
 //start of build command functions
-BuildCommandPtr BuildCommand::StaticCreate()
+BuildCommandPtr BuildCommand::StaticCreate(uint32_t inNetworkId, const Vector3& inSpawnLocation)
 {
 	BuildCommandPtr retVal;
+	GameObjectPtr go = NetworkManager::sInstance->GetGameObject(inNetworkId);
+	uint32_t playerId = NetworkManager::sInstance->GetMyPlayerId();
 
+	//can only issue commands to this unit if I own it, and it's a cat
+	if (go && go->GetClassId() == RoboCat::kClassId && go->GetPlayerId() == playerId)
+	{
+		retVal = std::make_shared< BuildCommand >();
+		retVal->mNetworkId = inNetworkId;
+		retVal->mPlayerId = playerId;
+		retVal->mSpawnLocation = inSpawnLocation;
+	}
+	return retVal;
 }
 
 void BuildCommand::Write( OutputMemoryBitStream& inOutputStream )

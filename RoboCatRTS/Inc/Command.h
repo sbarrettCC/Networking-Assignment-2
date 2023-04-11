@@ -92,7 +92,7 @@ public:
 		mCommandType = CM_BUILD;
 	}
 
-	static shared_ptr< BuildCommand > StaticCreate(  );
+	static shared_ptr< BuildCommand > StaticCreate(uint32_t inNetworkId, const Vector3& inTarget);
 
 	virtual void Write( OutputMemoryBitStream& inOutputStream ) override;
 

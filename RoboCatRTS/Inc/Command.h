@@ -100,6 +100,8 @@ public:
 
 protected: 
 	virtual void Read( InputMemoryBitStream& inInputStream ) override;
+
+	Vector3 mSpawnLocation;
 };
 
 typedef shared_ptr< BuildCommand > BuildCommandPtr;
@@ -121,6 +123,9 @@ public:
 
 protected:
 	virtual void Read( InputMemoryBitStream& inInputStream ) override;
+
+	uint32_t mTargetTeamId;
+
 };
 
 typedef shared_ptr< SwitchTeamCommand > SwitchTeamCommandPtr;

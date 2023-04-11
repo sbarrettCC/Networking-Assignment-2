@@ -126,62 +126,86 @@ void MoveCommand::Read( InputMemoryBitStream& inInputStream )
 //start of build command functions
 BuildCommandPtr BuildCommand::StaticCreate()
 {
+	BuildCommandPtr retVal;
 
 }
 
 void BuildCommand::Write( OutputMemoryBitStream& inOutputStream )
 {
-
+	Command::Write(inOutputStream);
+	inOutputStream.Write();
 }
 
 void BuildCommand::ProcessCommand()
 {
-
+	GameObjectPtr obj = NetworkManager::sInstance->GetGameObject(mNetworkId);
+	if (obj && obj->GetClassId() == RoboCat::kClassId &&
+		obj->GetPlayerId() == mPlayerId)
+	{
+		RoboCat* rc = obj->GetAsCat();
+		//replace
+	}
 }
 
 void BuildCommand::Read( InputMemoryBitStream& inInputStream )
 {
-
+	inInputStream.Read();
 }
 
 //start of switch team command functions
 SwitchTeamCommandPtr SwitchTeamCommand::StaticCreate()
 {
+	SwitchTeamCommandPtr retVal;
 
 }
 
 void SwitchTeamCommand::Write( OutputMemoryBitStream& inOutputStream )
 {
-
+	Command::Write(inOutputStream);
+	inOutputStream.Write();
 }
 
 void SwitchTeamCommand::ProcessCommand()
 {
-
+	GameObjectPtr obj = NetworkManager::sInstance->GetGameObject(mNetworkId);
+	if (obj && obj->GetClassId() == RoboCat::kClassId &&
+		obj->GetPlayerId() == mPlayerId)
+	{
+		RoboCat* rc = obj->GetAsCat();
+		//replace
+	}
 }
 
 void SwitchTeamCommand::Read( InputMemoryBitStream& inInputStream )
 {
-
+	inInputStream.Read();
 }
 
 //start of meow command functions
 MeowCommandPtr MeowCommand::StaticCreate()
 {
+	MeowCommandPtr retVal;
 
 }
 
 void MeowCommand::Write( OutputMemoryBitStream& inOutputStream )
 {
-
+	Command::Write(inOutputStream);
+	inOutputStream.Write();
 }
 
 void MeowCommand::ProcessCommand()
 {
-
+	GameObjectPtr obj = NetworkManager::sInstance->GetGameObject(mNetworkId);
+	if (obj && obj->GetClassId() == RoboCat::kClassId &&
+		obj->GetPlayerId() == mPlayerId)
+	{
+		RoboCat* rc = obj->GetAsCat();
+		//replace
+	}
 }
 
 void MeowCommand::Read( InputMemoryBitStream& inInputStream )
 {
-
+	inInputStream.Read();
 }

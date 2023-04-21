@@ -25,6 +25,24 @@ shared_ptr< Command > Command::StaticReadAndCreate( InputMemoryBitStream& inInpu
 		retVal->mPlayerId = playerId;
 		retVal->Read( inInputStream );
 		break;
+	case CM_BUILD:
+		retVal = std::make_shared< BuildCommand >();
+		retVal->mNetworkId = networkId;
+		retVal->mPlayerId = playerId;
+		retVal->Read(inInputStream);
+		break;
+	case CM_SWITCHTEAM:
+		retVal = std::make_shared< SwitchTeamCommand >();
+		retVal->mNetworkId = networkId;
+		retVal->mPlayerId = playerId;
+		retVal->Read(inInputStream);
+		break;
+	case CM_MEOW:
+		retVal = std::make_shared< MeowCommand >();
+		retVal->mNetworkId = networkId;
+		retVal->mPlayerId = playerId;
+		retVal->Read(inInputStream);
+		break;
 	default:
 		LOG( "Read in an unknown command type??" );
 		break;
@@ -144,7 +162,7 @@ BuildCommandPtr BuildCommand::StaticCreate(uint32_t inNetworkId, const Vector3& 
 void BuildCommand::Write( OutputMemoryBitStream& inOutputStream )
 {
 	Command::Write(inOutputStream);
-	inOutputStream.Write();
+	inOutputStream.Write(mSpawnLocation);
 }
 
 void BuildCommand::ProcessCommand()
@@ -154,26 +172,38 @@ void BuildCommand::ProcessCommand()
 		obj->GetPlayerId() == mPlayerId)
 	{
 		RoboCat* rc = obj->GetAsCat();
-		//replace
+		
+		rc->EnterBuildingState();
 	}
 }
 
 void BuildCommand::Read( InputMemoryBitStream& inInputStream )
 {
-	inInputStream.Read();
+	inInputStream.Read(mSpawnLocation);
 }
 
 //start of switch team command functions
-SwitchTeamCommandPtr SwitchTeamCommand::StaticCreate()
+SwitchTeamCommandPtr SwitchTeamCommand::StaticCreate(uint32_t inNetworkId, const uint32_t& targetTeamId)
 {
 	SwitchTeamCommandPtr retVal;
+	GameObjectPtr go = NetworkManager::sInstance->GetGameObject(inNetworkId);
+	uint32_t playerId = NetworkManager::sInstance->GetMyPlayerId();
 
+	//can only issue commands to this unit if I own it, and it's a cat
+	if (go && go->GetClassId() == RoboCat::kClassId && go->GetPlayerId() == playerId)
+	{
+		retVal = std::make_shared< BuildCommand >();
+		retVal->mNetworkId = inNetworkId;
+		retVal->mPlayerId = playerId;
+		retVal->mTargetTeamId = targetTeamId;
+	}
+	return retVal;
 }
 
 void SwitchTeamCommand::Write( OutputMemoryBitStream& inOutputStream )
 {
 	Command::Write(inOutputStream);
-	inOutputStream.Write();
+	inOutputStream.Write(mTargetTeamId);
 }
 
 void SwitchTeamCommand::ProcessCommand()
@@ -183,26 +213,36 @@ void SwitchTeamCommand::ProcessCommand()
 		obj->GetPlayerId() == mPlayerId)
 	{
 		RoboCat* rc = obj->GetAsCat();
-		//replace
+		
+		rc->EnterSwitchingState();
 	}
 }
 
 void SwitchTeamCommand::Read( InputMemoryBitStream& inInputStream )
 {
-	inInputStream.Read();
+	inInputStream.Read(mTargetTeamId);
 }
 
 //start of meow command functions
-MeowCommandPtr MeowCommand::StaticCreate()
+MeowCommandPtr MeowCommand::StaticCreate(uint32_t inNetworkId)
 {
 	MeowCommandPtr retVal;
+	GameObjectPtr go = NetworkManager::sInstance->GetGameObject(inNetworkId);
+	uint32_t playerId = NetworkManager::sInstance->GetMyPlayerId();
 
+	//can only issue commands to this unit if I own it, and it's a cat
+	if (go && go->GetClassId() == RoboCat::kClassId && go->GetPlayerId() == playerId)
+	{
+		retVal = std::make_shared< BuildCommand >();
+		retVal->mNetworkId = inNetworkId;
+		retVal->mPlayerId = playerId;
+	}
+	return retVal;
 }
 
 void MeowCommand::Write( OutputMemoryBitStream& inOutputStream )
 {
 	Command::Write(inOutputStream);
-	inOutputStream.Write();
 }
 
 void MeowCommand::ProcessCommand()
@@ -212,11 +252,12 @@ void MeowCommand::ProcessCommand()
 		obj->GetPlayerId() == mPlayerId)
 	{
 		RoboCat* rc = obj->GetAsCat();
-		//replace
+
+		rc->enterMeowState();
 	}
 }
 
 void MeowCommand::Read( InputMemoryBitStream& inInputStream )
 {
-	inInputStream.Read();
+	
 }

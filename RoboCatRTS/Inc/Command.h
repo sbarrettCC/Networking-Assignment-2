@@ -113,9 +113,10 @@ public:
 	SwitchTeamCommand()
 	{
 		mCommandType = CM_SWITCHTEAM;
+		mTargetTeamId = mPlayerId; //get other player's ID?
 	}
 
-	static shared_ptr< SwitchTeamCommand > StaticCreate();
+	static shared_ptr< SwitchTeamCommand > StaticCreate(uint32_t inNetworkId, const uint32_t& targetTeamId);
 
 	virtual void Write( OutputMemoryBitStream& inOutputStream ) override;
 
@@ -125,7 +126,6 @@ protected:
 	virtual void Read( InputMemoryBitStream& inInputStream ) override;
 
 	uint32_t mTargetTeamId;
-
 };
 
 typedef shared_ptr< SwitchTeamCommand > SwitchTeamCommandPtr;
@@ -139,7 +139,7 @@ public:
 		mCommandType = CM_MEOW;
 	}
 
-	static shared_ptr< MeowCommand > StaticCreate();
+	static shared_ptr< MeowCommand > StaticCreate(uint32_t inNetworkId);
 
 	virtual void Write( OutputMemoryBitStream& inOutputStream ) override;
 

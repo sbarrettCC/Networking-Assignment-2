@@ -23,6 +23,9 @@ public:
 	void UpdateRotation( const Vector3& inTarget );
 	void EnterMovingState( const Vector3& inTarget );
 	void EnterAttackState( uint32_t inTargetNetId );
+	void EnterSwitchingState();
+	void EnterBuildingState();
+	void EnterMeowState();
 	void TakeDamage( int inDmgAmount );
 	virtual void HandleDying() override;
 

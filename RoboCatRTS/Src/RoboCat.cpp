@@ -180,3 +180,17 @@ void RoboCat::UpdateAttackState( float inDeltaTime )
 	}
 }
 
+void RoboCat::EnterBuildingState()
+{
+
+}
+
+void RoboCat::EnterSwitchingState()
+{
+
+}
+
+void RoboCat::EnterMeowState()
+{
+
+}
